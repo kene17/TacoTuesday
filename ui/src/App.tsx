@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import { Header } from './components';
-import { HomePage } from './pages';
+import { AllRoutes } from './routes';
 
 function App() {
   return (
-    <div className="main-container">
-      <Header />
-      <HomePage />
-    </div>
+    
+          <main className="main-container">
+            <AllRoutes />
+          </main>
+        
   );
 }
 
