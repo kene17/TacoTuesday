@@ -1,10 +1,12 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { UserContext } from '../store';
 import './Register.css';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const {userInfo, setUserInfo} = useContext(UserContext);
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
@@ -27,7 +29,8 @@ const LoginPage = () => {
       if (response.ok) {
         const responseData = await response?.json();
         setRedirect(true);
-        console.log(responseData);
+        setUserInfo(responseData)
+
       } else {
         console.log('login failed');
       }
