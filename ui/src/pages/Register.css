@@ -1,0 +1,10 @@
+.register {
+  min-width: 400px;
+  margin: 330px auto;
+  justify-content: center;
+  width: 200px;
+}
+
+.title {
+  text-align: center;
+}

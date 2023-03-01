@@ -1,7 +1,53 @@
-import React from 'react';
-
+import React, { ChangeEvent, useCallback, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import './Register.css';
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const { name, value } = e.target;
+      if (name === 'name') setUsername(value);
+      else if (name === 'password') setPassword(value);
+    },
+    [setUsername, setPassword]
+  );
+
+  const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:4000/login', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' //this saves the cookie in react app
+      });
+      if (response.ok) {
+        const responseData = await response?.json();
+        setRedirect(true);
+        console.log(responseData);
+      } else {
+        console.log('login failed');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (redirect) {
+    return <Navigate to="/" />;
+  }
+
+  return (
+    <form className="register" onSubmit={handleLogin}>
+      <h1 className="title">Login</h1>
+      <input type="text" name="name" value={username} onChange={handleChange} />
+      <input type="password" name="password" value={password} onChange={handleChange} />
+      <button>Login</button>
+    </form>
+  );
 };
 
 export default LoginPage;
